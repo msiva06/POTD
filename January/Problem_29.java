@@ -2,40 +2,33 @@ package January;
 
 import java.util.Stack;
 
-// Queue using stacks
+// Reverse polish notation
 public class Problem_29 {
-    class MyQueue {
-    Stack<Integer> s1;
-    Stack<Integer> s2;
-    public MyQueue() {
-        s1= new Stack<Integer>();
-        s2 = new Stack<Integer>();
-    }
-    
-    public void push(int x) {
-        while(!s1.isEmpty()){
-            s2.push(s1.pop());
+    public int evalRPN(String[] tokens) {
+        Stack<Integer> stack = new Stack<>();
+        int ans = 0;
+        for(int i = 0; i < tokens.length; i++){
+            if(tokens[i].equals("+") || tokens[i].equals("-") || tokens[i].equals("*") || tokens[i].equals("/")){
+                int op1 = stack.pop();
+                int op2 = stack.pop();
+                if(tokens[i].equals("+")){
+                    ans = op1 + op2;
+                }
+                if(tokens[i].equals("-")){
+                    ans = op2 - op1;
+                }
+                if(tokens[i].equals("*")){
+                    ans = (op1 * op2); 
+                }
+                if(tokens[i].equals("/")){
+                    ans = (op2 / op1);
+                }
+                stack.push(ans);
+            }
+            else{
+                stack.push(Integer.valueOf(tokens[i]));
+            }
         }
-        s1.push(x);
-        while(!s2.isEmpty()){
-            s1.push(s2.pop());
-        }
+        return stack.pop();
     }
-    
-    public int pop() {
-        if(!s1.isEmpty())
-            return s1.pop();
-        return -1;
-    }
-    
-    public int peek() {
-        if(!s1.isEmpty())
-            return s1.peek();
-        return -1;
-    }
-    
-    public boolean empty() {
-        return s1.isEmpty();
-    }
-}
 }
